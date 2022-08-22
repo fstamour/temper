@@ -421,9 +421,11 @@ masks+shifts,
 \ ===========================
 
 s" oooo oord dddd rrrr"
-$3
+$7
 s" Add with Carry"
 il adc,
+
+
 
 cr
 .il adc,
