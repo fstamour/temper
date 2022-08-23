@@ -429,3 +429,19 @@ il adc,
 
 cr
 .il adc,
+
+\ ===========================
+\ trying a different way
+
+include spread.fs
+
+\ s" oooo oord dddd rrrr"
+: adc'
+  %0001110000000000
+  swap [ %0000001000001111 spread ] or
+  swap [ %0000000111110000 spread ] or
+  ;
+
+
+#12 #6 adc' .ss
+quit 

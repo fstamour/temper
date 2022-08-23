@@ -1,10 +1,10 @@
 \ table to keep track of all
 \ assembly words
-create instructions 512 cells allot
+create instructions #512 cells allot
 variable #instruction
 
 : 0instructions
-  instructions 512 cells erase
+  instructions #512 cells erase
   0 #instruction ! ;
 
 0instructions

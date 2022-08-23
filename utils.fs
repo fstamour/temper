@@ -1,10 +1,11 @@
 \ print the stack and a newline
 : .ss .s cr ;
+: 'ss postpone .ss ;
 
 \ print a line of at least 5 "="s
 \ hr stands for "horizontal rule
 \ like in html
-: hr ( u - ) 5 max 0 
+: hr ( u - ) #5 max 0 
   do [char] = emit loop ;
 
 \ type a string and underline it with
@@ -113,17 +114,17 @@
 
 \ store 2 bytes in the dictionary
 : 2b, ( u - )
-  dup 8 rshift c,
+  dup #8 rshift c,
           $ff and c, ;
 
 \ fetch 2 bytes at address
 : 2b@ ( c-addr - u )
   dup c@ swap char+ c@
-  swap 8 lshift or ;
+  swap #8 lshift or ;
 
 (
 here $abcd dup 2b, 
-\ cr dup $8 dump
+\ cr dup #8 dump
 over 2b@ = .
 drop
 )

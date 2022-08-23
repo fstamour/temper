@@ -2,9 +2,9 @@
 \ differently based on the current 
 \ mode
 
-0 constant compile-mode
-1 constant doc-mode
-2 constant decompile-mode
+#0 constant compile-mode
+#1 constant doc-mode
+#2 constant decompile-mode
 
 variable mode
 

@@ -44,7 +44,7 @@ variable /assembly
   \ todo maybe check if assembly
   \ is allocated
   \ todo check for overflow
-  dup 8 rshift swap
+  dup #8 rshift swap
   $ff and swap
   ( lsb msb )
   assembly' +
@@ -65,7 +65,7 @@ variable /assembly
   assembly' dump ;
 
 (
-10 0assembly
+#10 0assembly
 $abcd @assembly
 .assembly 
 quit
