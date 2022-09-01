@@ -5,28 +5,19 @@
 \ spaces
 create layout #16 chars allot
 
+#16 constant /layout
+
 \ initialize layout
 : 0layout
-  layout #16 chars erase ;
+  layout /layout chars erase ;
 
 \ push layout addr and its size
-: layout' layout #16 ;
+: layout' layout /layout ;
 
 \ store a layout, stripping spaces
 : @layout
-  0 -rot \ index into layout
-  0 do
-     dup
-     i th-c@
-     dup bl = if \ skip spaces
-      drop \ drop char
-    else
-      ( index c-addr c )
-      third layout th-c!
-      1+'
-    then
-  loop
-  2drop ;
+  0layout
+  layout swap remove-spaces drop ;
 
 \ print the stored layout
 : .layout layout' type cr ;

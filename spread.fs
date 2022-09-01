@@ -42,7 +42,7 @@ clear-run .ss
     dup \ used by "while"
   while
     \ get the length and offset of the
-    \ leftmon run of of ones
+    \ leftmost run of of ones
     leftmost-run
     \ used by clear-run
     2dup
@@ -57,6 +57,7 @@ clear-run .ss
      \ push and apply the offset
      ]] literal lshift [[
      \ update the intermediate result
+     \ and put back the input on top
     ]] rot or swap [[
     \ update the input's offset
     \ (adds the length of the mask)
@@ -68,7 +69,6 @@ clear-run .ss
   postpone drop
   2drop ;
 
-
 (
 : frob 
   [ %1000111100 spread ] ; 
@@ -79,3 +79,43 @@ $ffff frob cr .ss cr drop
 #43 frob cr .ss cr drop
 #21 frob cr .ss cr drop
 )
+
+
+
+\ given a character, a layout, and a value
+\ spreas the bit of x accordingly to
+\ to where the character c appears in the
+\ layout.
+\
+\ This is roughly the dynamic equivalent
+\ of the compiler word "spread".
+\
+\ The layout could be seen as a set of
+\ masks, where the character is used to
+\ select which mask to use.
+: >spread
+  ( c-addr u c x - u )
+  {: c x :}
+  0 0 0 locals| ix res pos |
+  over + 1-' 1-
+  -do
+    i c@ c =
+    if
+      ix 1-bit-mask x and ix rshift
+      pos lshift
+      res or to res
+      ix 1+ to ix
+    then
+    pos 1+ to pos
+  1 -loop
+  res ;
+
+: test->spread
+ s" aabbaa"
+ [char] a
+ %1101
+ >spread
+ dup . cr
+ assert( %110001 = ) ;
+
+test->spread

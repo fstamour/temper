@@ -1,12 +1,15 @@
 \ instructions with 0 operands
+s" oooo oooo oooo oooo" @layout
+
 s" Return from subroutine"
-  $9508 i0 ret,
+  $9508
+  instruction: ret,
 s" Clear Carry Flag"
-  $9488 i0 clc,
+  $9488 instruction: clc,
 s" Clear Half Carry Flag"
-  $94D8 i0 clh,
+  $94D8 instruction: clh,
 s" Clear Global Interrupt Enable bit"
-  $94F8 i0 cli,
+  $94F8 instruction: cli,
 
 ( 
 all the instructions without
@@ -28,6 +31,13 @@ nop [ ]
 sleep [ ]
 wdr [ ]
 )
+
+s" oooo oord dddd rrrr" @layout
+
+s" Add with Carry"
+n( %0001 11 )
+instruction: adc,
+
 
 \ instructions grouped by layout
 (
