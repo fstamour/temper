@@ -50,6 +50,15 @@
   dup @ 1+
   swap ! ;
 
+\ dup the next of stack
+: ndup ( a b -- a a b )
+  swap tuck swap ;
+
+\ swap the next element on stack with the
+\ previous one
+: nswap ( a b c -- b a c )
+  -rot swap rot ;
+
 \ find the rightmost bit equals to b
 : 1st-bit ( u1 b -- u2 )
  {: x bit :}
@@ -182,18 +191,43 @@ drop
   loop
   2drop ;
 
-\ todo use save-mem and free instead
-\ of the pad, maybe
-\
 \ a parsing word to be able to write
 \ numbers with spaces
 \ for better readability
-\ ex: n( %0001 11 )
+\ ex: n( %0001 11 ) n( #1 000 000 )
 : n( ( "ccc<xchar>" – u )
  [char] ) parse
- dup -rot
+ dup -rot \ keep the size
+ \ copy into the pad so we can modify the
+ \ string in-place
  @pad
- pad swap
- remove-spaces' s>number? 2drop ;
+ pad swap \ put back the size on the top
+ remove-spaces'
+ \ convert to number, it assumes it was
+ \ successful and the number was only one
+ \ cell, hence the 2drop
+ s>number? 2drop ;
 
-: [n(] n( ; immediate
+
+\ todo better name
+: find-char-from-end ( c-addr u1 c - u2 )
+  swap 0 swap
+  -do
+    over i + c@ over =
+    if
+      2drop
+      i
+      unloop exit
+    then
+  1 -loop
+  2drop -1
+  ;
+
+: test-find-char-from-end
+  s" abcd" [char] c
+  find-char-from-end assert( 2 = )
+
+  s" abcd" [char] f
+  find-char-from-end assert( -1 = )
+  ;
+test-find-char-from-end

@@ -4,12 +4,18 @@ s" oooo oooo oooo oooo" @layout
 s" Return from subroutine"
   $9508
   instruction: ret,
+
 s" Clear Carry Flag"
-  $9488 instruction: clc,
+  $9488 
+  instruction: clc,
+
 s" Clear Half Carry Flag"
-  $94D8 instruction: clh,
+  $94D8
+  instruction: clh,
+
 s" Clear Global Interrupt Enable bit"
-  $94F8 instruction: cli,
+  $94F8
+  instruction: cli,
 
 ( 
 all the instructions without
@@ -21,7 +27,7 @@ elmp [ ]
 sec [ ] clc [x]
 sen [ ] cln
 sez [ ] clz [ ]
-sei cli [x]
+sei [ ] cli [x]
 ses [ ] cls [ ]
 sev [ ] clv [ ]
 set [ ] clt [ ]
@@ -32,45 +38,91 @@ sleep [ ]
 wdr [ ]
 )
 
+
 s" oooo oord dddd rrrr" @layout
 
+\ 0000 01 cpc, Compare with Carry
+\ 0000 10 sbc, Subtract with Carry
+
+s" Add without Carry"
+  n( % 0000 11 )
+  instruction: add,
+
+\ 0001 00 cpse, Compare Skip if Equal
+\ 0001 01 cp, Compare
+\ 0001 10 sub, Subtract without Carry
+
 s" Add with Carry"
-n( %0001 11 )
-instruction: adc,
+  n( % 0001 11 )
+  instruction: adc,
 
 
-\ instructions grouped by layout
-(
-oooo oord dddd rrrr
-0001 11 adc
-0000 11 add
-0010 00 and
+s" Logical AND"
+  n( % 0010 00 )
+  instruction: and,
 
-oooo oooo kkdd kkkk
-1001 0110 adiw
+\ 0010 01 eor, Exclusive Or
+\ 0010 10 or, Logical Or
+\ 0010 11 mov, Copy Register
+
+\ 1001 11 mul, Multiply Unsigned
+
+
+
+s" oooo oooo kkdd kkkk" @layout
+
+s" Add Immediate to Word"
+  n( % 1001 0110 ) 
+  instruction: adiw,
 \ cbr is a subset of adiw
-1001 1000 cbi
 
-oooo kkkk dddd kkkk
-0111 andi
+s" oooo kkkk dddd kkkk" @layout
 
-oooo oood dddd oooo
-1001 010 0101 asr
+s" Logical AND with Immediate"
+  n( % 0111 )
+  instruction: andi,
+\ cpi Compare with Immediate
 
-oooo oooo osss oooo
-1001 0100 1 1000 bclr
-\ cbr is a subset of blcr
-1001 0100 0 1000 bset
+s" oooo oood dddd oooo" @layout
+
+s" Arithmetic Shift Right"
+  n( % 1001 010 0101 )
+  instruction: asr,
 
 
+s" oooo oooo osss oooo" @layout
 
-oooo oood dddd obbb
-1111 100 0 bld
-1111 101 0 bst
+s" Bit Clear in SREG"
+  n( % 1001 0100 1 1000 )
+  instruction: bclr,
 
-oooo ookk kkkk ksss
-1111 01 brbc
-1111 00 brbs
+s" Bit Set in SREG"
+  n( % 1001 0100 0 1000 )
+  instruction: bset,
+
+
+s" oooo oood dddd obbb" @layout
+
+s" Bit Load from the T Bit in SREG to a Bit in Register"
+  n( % 1111 100 0 )
+  instruction: bld,
+
+s" Bit Store from Bit in Register to T Bit in SREG"
+  n( % 1111 101 0 )
+  instruction: bst,
+
+
+s" oooo ookk kkkk ksss" @layout
+
+s" Branch if Bit in SREG is Cleared"
+  n( % 1111 01 )
+  instruction: brbc,
+
+s" Branch if Bit in SREG is Set"
+  n( % 1111 00 )
+  instruction: brbs,
+
+(
 
 \ The following instructions are
 \ equivalent to brbc or brbs with
@@ -97,7 +149,9 @@ brbs
 1111 00 101 brhs
 1111 00 110 brts
 1111 00 111 brie
+)
 
+(
 \ 32bits instructions!!!
 oooo oook kkkk oook
 kkkkk kkkk kkkk kkkkk

@@ -67,7 +67,6 @@ include spread.fs
 : instruction:
   ( c-addr u u "name" )
   \ store the docstring, keep its location
-  \ on the return stack
   -rot here {: docstring :} str,
 
   \ spread and store the opcode

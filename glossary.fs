@@ -27,13 +27,3 @@ variable #instruction
     instructions i cells + @
     .xt-name cr
   loop ;
-
-(
-' create @instruction
-' + @instruction
-cr
-.s cr
-instructions 24 dump cr
-.instructions
-quit
-)
