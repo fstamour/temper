@@ -34,7 +34,8 @@ quit
   ret, clc,
   #7 #12 adc,
   decompile
-  free-assembly ;
+  \ free-assembly
+  ;
 
 .instructions
 test-disassembly
@@ -56,15 +57,20 @@ nswap cmove
 
 here test-dir - /test-dir !
 
-test-dir /test-dir @ cr type
+: test-dir' test-dir /test-dir @ ;
 
 : test-dir/
   { dest c-addr u }
-  test-dir dest /test-dir @ cmove
+  test-dir' dest swap cmove
   c-addr dest /test-dir @ + u cmove
   dest /test-dir @ u + ;
 
-pad s" output.bin" test-dir/ type
+test-dir' 
+n( % 111 110 000 )
+mkdir-parents
+
+pad s" output.bin" test-dir/ 
+write-assembly
 
 \ ==========================
 

@@ -70,3 +70,8 @@ $abcd @assembly
 .assembly 
 quit
 )
+
+: write-assembly ( c-addr u -- )
+  w/o bin create-file throw
+  assembly' third write-file throw
+  close-file throw ;
