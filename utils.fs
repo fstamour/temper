@@ -130,7 +130,7 @@
 \ store 2 bytes in the dictionary
 : 2b, ( u -- )
   dup #8 rshift c,
-          $ff and c, ;
+  $ff and c, ;
 
 \ fetch 2 bytes at address
 : 2b@ ( c-addr -- u )

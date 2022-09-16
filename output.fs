@@ -73,5 +73,9 @@ quit
 
 : write-assembly ( c-addr u -- )
   w/o bin create-file throw
-  assembly' third write-file throw
+  #assembly @ 0 ?do
+    \ third write-file throw
+    dup i 2* 1+ assembly + swap 1 swap write-file throw
+    dup i 2*    assembly + swap 1 swap write-file throw
+  loop
   close-file throw ;
