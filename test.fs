@@ -42,19 +42,39 @@ test-disassembly
 
 \ ==========================
 
+\ we want to have some tests that write
+\ files, so we compute a directory path
+\ relative to the source files
+
+\ the size of the path
 variable /test-dir
+\ the path
 create test-dir
 
 here
 sourcefilename
-ndup char / find-char-from-end 
-dup allot
-nswap cmove
+ndup char / find-char-from-end
+\ TODO this won't work if we put source
+\ in a subdirectory of the current working
+\ directory (I think) 
+dup -1 = [if]
+  \ no slash found, so it's just a filename
+  2drop
+  unused
+  get-dir
+  allot
+[else]
+  dup allot
+  nswap cmove
+[then]
 
+
+\ we append the name of the directory
 here
 s" /test-outputs/" dup allot
 nswap cmove
 
+\ we save the length of the path
 here test-dir - /test-dir !
 
 : test-dir' test-dir /test-dir @ ;
@@ -66,8 +86,10 @@ here test-dir - /test-dir !
   dest /test-dir @ u + ;
 
 test-dir' 
-n( % 111 110 000 )
+n( % 111 110 000 ) \ permission flags
 mkdir-parents
+\ skip "already exists" error
+dup -529 <> [if] throw [else] drop [then]
 
 pad s" output.bin" test-dir/ 
 write-assembly
