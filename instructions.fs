@@ -1,5 +1,6 @@
 \ instructions with 0 operands
 s" oooo oooo oooo oooo" @layout
+\ =============================
 
 s" No Operation"
   0
@@ -102,6 +103,11 @@ s" Return from Interrupt"
   n( % 1001 0101 0001 1000 )
   instruction: reti,
 
+\ TODO lpm has 2 other variants, this one loads the value into R0
+s" Load Program Memory"
+  n( % 1001 0101 1100 1000 )
+  instruction: lpm,
+
 \ TODO elpm has 2 other variants, this one loads the value into R0
 s" Extended Load Program Memory"
   n( % 1001 0101 1101 1000 )
@@ -114,7 +120,7 @@ operands:
 ijmp [x] eijmp [x]
 icall [x] eicall [x]
 ret [x] reti [x]
-elmp [x]
+lpm [x] elmp [x]
 sec [x] clc [x]
 sen [x] cln [x]
 sez [x] clz [x]
@@ -130,17 +136,31 @@ wdr [x]
 
 
 s" oooo oord dddd rrrr" @layout
+\ =============================
 
-\ 0000 01 cpc, Compare with Carry
-\ 0000 10 sbc, Subtract with Carry
+s" Compare with Carry"
+  n( % 0000 01 )
+  instruction: cpc,
+
+s" Subtract with Carry"
+  n( % 0000 10 )
+  instruction: sbc,
 
 s" Add without Carry"
   n( % 0000 11 )
   instruction: add,
 
-\ 0001 00 cpse, Compare Skip if Equal
-\ 0001 01 cp, Compare
-\ 0001 10 sub, Subtract without Carry
+s" Compare Skip if Equal"
+  n( % 0001 00 )
+  instruction: cpse,
+
+s" Compare"
+  n( % 0001 01 )
+  instruction: cp,
+
+s" Subtract without Carry"
+  n( % 0001 10 )
+  instruction: sub,
 
 s" Add with Carry"
   n( % 0001 11 )
@@ -151,15 +171,25 @@ s" Logical AND"
   n( % 0010 00 )
   instruction: and,
 
-\ 0010 01 eor, Exclusive Or
-\ 0010 10 or, Logical Or
-\ 0010 11 mov, Copy Register
+s" Exclusive OR"
+  n( % 0010 01 )
+  instruction: eor,
 
-\ 1001 11 mul, Multiply Unsigned
+s" Logical Or"
+  n( % 0010 10 )
+  instruction: or,
 
+s" Copy Register"
+  n( % 0010 11 )
+  instruction: mov,
+
+s" Multiply Unsigned"
+  n( % 1001 11 )
+  instruction: mul,
 
 
 s" oooo oooo kkdd kkkk" @layout
+\ =============================
 
 s" Add Immediate to Word"
   n( % 1001 0110 )
@@ -167,20 +197,93 @@ s" Add Immediate to Word"
 \ cbr is a subset of adiw
 
 s" oooo kkkk dddd kkkk" @layout
+\ =============================
+
+s" Compare with Immediate"
+  n( % 0011 )
+  instruction: cpi,
 
 s" Logical AND with Immediate"
   n( % 0111 )
   instruction: andi,
-\ cpi Compare with Immediate
+
+s" Load Immediate"
+  n( % 1110 )
+  instruction: ldi,
+
+s" oooo okkk dddd kkkk" @layout
+\ =============================
+
+s" Load Direct from Data Space"
+  n( % 1010 0 )
+  instruction: lds,
+
+s" ooqo qqod dddd oqqq" @layout
+\ =============================
+
+s" Load Indirect from Data Space to Register using Y with displacement"
+  n( % 10 0 0 1 )
+  instruction: ldd,
 
 s" oooo oood dddd oooo" @layout
+\  oooo ooor rrrr oooo
+\ =============================
+
+s" Load Indirect from Data Space to Register using Y"
+  n( % 1000 000 1000 )
+  instruction: ldy,
+
+s" Load Indirect from Data Space to Register using Y Post incremented"
+  n( % 1001 000 1001 )
+  instruction: ldy+,
+
+s" Load Indirect from Data Space to Register using Y Pre decremented"
+  n( % 1001 000 1010 )
+  instruction: ld-y,
+
+s" Load Indirect from Data Space to Register using X"
+  n( % 1001 000 1100 )
+  instruction: ldx,
+
+s" Load Indirect from Data Space to Register using X Post incremented"
+  n( % 1001 000 1101 )
+  instruction: ldx+,
+
+s" Load Indirect from Data Space to Register using X Pre decremented"
+  n( % 1001 000 1110 )
+  instruction: ld-x,
+
+s" Load and Clear"
+  n( % 1001 001 0110 )
+  instruction: lac,
+
+s" Load and Set"
+  n( % 1001 001 0101 )
+  instruction: las,
+
+s" Load and Toggle"
+  n( % 1001 001 0111 )
+  instruction: lat,
+
+s" One's complement"
+  n( % 1001 010 0000 )
+  instruction: com,
+
+s" Increment"
+  n( % 1001 010 0011 )
+  instruction: inc,
 
 s" Arithmetic Shift Right"
   n( % 1001 010 0101 )
   instruction: asr,
 
+s" Decrement"
+  n( % 1001 010 1010 )
+  instruction: dec,
+
 
 s" oooo oooo osss oooo" @layout
+\ =============================
 
 s" Bit Clear in SREG"
   n( % 1001 0100 1 1000 )
@@ -192,6 +295,7 @@ s" Bit Set in SREG"
 
 
 s" oooo oood dddd obbb" @layout
+\ =============================
 
 s" Bit Load from the T Bit in SREG to a Bit in Register"
   n( % 1111 100 0 )
@@ -203,6 +307,7 @@ s" Bit Store from Bit in Register to T Bit in SREG"
 
 
 s" oooo ookk kkkk ksss" @layout
+\ =============================
 
 s" Branch if Bit in SREG is Cleared"
   n( % 1111 01 )
@@ -241,8 +346,45 @@ brbs
 1111 00 111 brie
 )
 
+s" oooo oood dddd obbb" @layout
+\ =============================
+
+s" Bit Store from Bit in Register to T Bit in SREG"
+  n( % 1111 101 0 )
+  instruction: bst,
+
+s" oooo oooo AAAA Abbb" @layout
+\ =============================
+
+s" Clear Bit in I/O register"
+  n( % 1001 1000 )
+  instruction: cbi,
+
+s" oooo oAAd dddd AAAA" @layout
+\ =============================
+
+s" Load an I/O Location to Register"
+  n( % 1011 0 )
+  instruction: in,
+
 (
+
+\ Some instructions have variants:
+- lmp has 3 variant
+- elpm has 3 variants
+- ld has 3 + 4 variants
+
+\ The instruction CLR is EOR Rd, Rd
+
+\ The instruction CBR is ANDI Rd, 0xFF - K
+
+\ There's also an instruction called "DEC" that is used for encryption
+\ but I won't implement it unless I need it.
+
+\ Same with FMUL, FMULS and FMULSU
+
 \ 32bits instructions!!!
+\ I will probably not implement them, until I need them
 oooo oook kkkk oook
 kkkkk kkkk kkkk kkkkk
 1001 010 111 call
@@ -252,12 +394,5 @@ oooo oood dddd oooo
 kkkkk kkkk kkkk kkkkk
 1001 000 0000 lds
 1001 001 0000 sts
-)
-
-
-(
-
-\ Some instructions have variants:
-- elpm has 3 variants
 
 )
