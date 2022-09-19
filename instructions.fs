@@ -1,41 +1,131 @@
 \ instructions with 0 operands
 s" oooo oooo oooo oooo" @layout
 
-s" Return from subroutine"
-  $9508
-  instruction: ret,
+s" No Operation"
+  0
+  instruction: nop,
+
+s" Sleep"
+  n( % 1001 0101 1000 1000 )
+  instruction: sleep,
+
+s" Watchdog Reset"
+  n( % 1001 0101 1010 1000 )
+  instruction: wdr,
+
 
 s" Clear Carry Flag"
-  $9488 
+  $9488
   instruction: clc,
 
+s" Set Carry Flag"
+  n( % 1001 0100 0000 1000 )
+  instruction: sec,
+
 s" Clear Half Carry Flag"
-  $94D8
+  n( % 1001 0100 1101 1000 )
   instruction: clh,
+
+s" Set Half Carry Flag"
+  n( % 1001 0100 0101 1000 )
+  instruction: seh,
 
 s" Clear Global Interrupt Enable bit"
   $94F8
   instruction: cli,
 
-( 
+s" Set Global Interrupt Enable Bit"
+  n( % 1001 0100 0111 1000 )
+  instruction: sei,
+
+s" Clear Negative Flag"
+  n( % 1001 0100 1010 1000 )
+  instruction: cln,
+
+s" Set Negative Flag"
+  n( % 1001 0100 0010 1000 )
+  instruction: sen,
+
+s" Clear Zero Flag"
+  n( % 1001 0100 1001 1000 )
+  instruction: clz,
+
+s" Set Zero Flag"
+  n( % 1001 0100 0001 1000 )
+  instruction: sez,
+
+s" Clear Sign Flag"
+  n( % 1001 0100 1100 1000 )
+  instruction: cls,
+
+s" Set Sign Flag"
+  n( % 1001 0100 0100 1000 )
+  instruction: ses,
+
+s" Clear Overflow Flag"
+  n( % 1001 0100 1011 1000 )
+
+s" Set Overflow Flag"
+  n( % 1001 0100 0011 1000 )
+  instruction: sev,
+
+s" Clear T Bit"
+  n( % 1001 0100 1110 1000 )
+  instruction: clt,
+
+s" Set T Bit"
+  n( % 1001 0100 0110 1000 )
+  instruction: set,
+
+
+s" Indirect Jump"
+  n( % 1001 0100 0000 1001 )
+  instruction: ijmp,
+
+s" Extended Indirect Jump"
+  n( % 1001 0100 0001 1001 )
+  instruction: eijmp,
+
+s" Indirect Call to Subroutine"
+  n( % 1001 0101 0000 1001 )
+  instruction: icall,
+
+s" Extended Indirect Call to Subroutine"
+  n( % 1001 0101 0001 1001 )
+  instruction: iecall,
+
+s" Return from subroutine"
+  n( % 1001 0101 0000 1000 )
+  instruction: ret,
+
+s" Return from Interrupt"
+  n( % 1001 0101 0001 1000 )
+  instruction: reti,
+
+\ TODO elpm has 2 other variants, this one loads the value into R0
+s" Extended Load Program Memory"
+  n( % 1001 0101 1101 1000 )
+  instruction: elpm>r0,
+
+
+(
 all the instructions without
 operands:
-ijmp [ ] eijmp [ ]
-icall [ ] eicall [ ]
-ret [x] reti [ ]
-elmp [ ]
-sec [ ] clc [x]
-sen [ ] cln
-sez [ ] clz [ ]
-sei [ ] cli [x]
-ses [ ] cls [ ]
-sev [ ] clv [ ]
-set [ ] clt [ ]
-seh [ ] clh [x]
-break [ ]
-nop [ ]
-sleep [ ]
-wdr [ ]
+ijmp [x] eijmp [x]
+icall [x] eicall [x]
+ret [x] reti [x]
+elmp [x]
+sec [x] clc [x]
+sen [x] cln [x]
+sez [x] clz [x]
+sei [x] cli [x]
+ses [x] cls [x]
+sev [x] clv [x]
+set [x] clt [x]
+seh [x] clh [x]
+nop [x]
+sleep [x]
+wdr [x]
 )
 
 
@@ -72,7 +162,7 @@ s" Logical AND"
 s" oooo oooo kkdd kkkk" @layout
 
 s" Add Immediate to Word"
-  n( % 1001 0110 ) 
+  n( % 1001 0110 )
   instruction: adiw,
 \ cbr is a subset of adiw
 
@@ -142,7 +232,7 @@ brbc
 brbs
 ====
 1111 00 000 brcs brlo
-1111 00 001 breq 
+1111 00 001 breq
 1111 00 010 brmi
 1111 00 011 brvc
 1111 00 100 brlt
@@ -165,6 +255,9 @@ kkkkk kkkk kkkk kkkkk
 )
 
 
+(
 
+\ Some instructions have variants:
+- elpm has 3 variants
 
-
+)
