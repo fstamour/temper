@@ -1,10 +1,12 @@
 #! /usr/bin/env gforth
 
-include ../avr.fs
+needs ../avr.fs
+needs ../attiny13.fs
 
-10 0assembly
+
 sleep,
-s" sleep.bin" write-assembly
-free-assembly
 
+s" sleep.bin" write-assembly
+
+free-assembly
 bye

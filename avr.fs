@@ -1,6 +1,6 @@
-include utils.fs
-include glossary.fs
-include output.fs
-include mode.fs
-include instr-macro.fs
-include instructions.fs
+needs utils.fs
+needs glossary.fs
+needs output.fs
+needs mode.fs
+needs instr-macro.fs
+needs instructions.fs
