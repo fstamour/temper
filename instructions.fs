@@ -65,6 +65,7 @@ s" Set Sign Flag"
 
 s" Clear Overflow Flag"
   n( % 1001 0100 1011 1000 )
+  instruction: clv,
 
 s" Set Overflow Flag"
   n( % 1001 0100 0011 1000 )
@@ -345,13 +346,6 @@ brbs
 1111 00 110 brts
 1111 00 111 brie
 )
-
-s" oooo oood dddd obbb" @layout
-\ =============================
-
-s" Bit Store from Bit in Register to T Bit in SREG"
-  n( % 1111 101 0 )
-  instruction: bst,
 
 s" oooo oooo AAAA Abbb" @layout
 \ =============================

@@ -4,7 +4,7 @@
 
 \ todo "code" might have been a
 \ better name??
-\ instead of assembly 
+\ instead of assembly
 
 variable assembly-addr
 variable #assembly
@@ -19,7 +19,7 @@ variable /assembly
   assembly-addr !
   0 #assembly ! ;
 
-\ todo word to allot a buffer 
+\ todo word to allot a buffer
 \ instead of allocate it
 
 \ get the address of the buffer
@@ -32,11 +32,11 @@ variable /assembly
   0 assembly !
   0 #assembly !
   0 /assembly ! ;
- 
+
 \ get the address and length of the
 \ buffer
 : assembly' ( - c-addr u )
-  assembly 
+  assembly
   #assembly @ 2* chars ;
 
 \ store 2 bytes in the buffer
@@ -60,14 +60,14 @@ variable /assembly
   2b@ ;
 
 : .assembly ( - )
-  \ todo definitely check if 
+  \ todo definitely check if
   \ assembly is allocated
   assembly' dump ;
 
 (
 #10 0assembly
 $abcd @assembly
-.assembly 
+.assembly
 quit
 )
 
@@ -79,3 +79,17 @@ quit
     dup i 2*    assembly + swap 1 swap write-file throw
   loop
   close-file throw ;
+
+
+\ TODO
+\ write the firmware in ihex format
+: write-ihex
+  s" :" \ start code
+  \ byte count [0 - 255
+  s" 0000" \ address
+  s" 00" \ record type
+  \ data
+  \ checksum
+  \ + $ff and repeat invert
+  s" :0000001FF" \ EOF record
+  ;

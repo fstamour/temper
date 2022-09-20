@@ -4,5 +4,3 @@ include output.fs
 include mode.fs
 include instr-macro.fs
 include instructions.fs
-
-include test.fs

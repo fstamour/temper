@@ -6,21 +6,10 @@
   swap
   drop ;
 
-(
-%1000111100 leftmost-run
-.s
-\ 2 4
-)
-
 : clear-run ( u1 offset size  - u2 )
   + 1s invert and ;
 
-(
-%1000111100 #2 #4
-clear-run .ss
-)
-
-: spread ( 
+: spread (
   compilation: u -- ;
   interpretation: u1 -- u2
   )
@@ -61,7 +50,7 @@ clear-run .ss
     ]] rot or swap [[
     \ update the input's offset
     \ (adds the length of the mask)
-    dup offset + to offset 
+    dup offset + to offset
     \ remove the run from the layout
     clear-run
   repeat
@@ -69,25 +58,12 @@ clear-run .ss
   postpone drop
   2drop ;
 
-(
-: frob 
-  [ %1000111100 spread ] ; 
-see frob
-
-$ffff frob cr .ss cr drop
-#42 frob cr .ss cr drop
-#43 frob cr .ss cr drop
-#21 frob cr .ss cr drop
-)
-
-
-
 \ given a character, a layout, and a value
-\ spreas the bit of x accordingly to
+\ spread the bit of x accordingly to
 \ to where the character c appears in the
 \ layout.
 \
-\ This is roughly the dynamic equivalent
+\ This is roughly the run-time equivalent
 \ of the compiler word "spread".
 \
 \ The layout could be seen as a set of
@@ -109,13 +85,3 @@ $ffff frob cr .ss cr drop
     pos 1+ to pos
   1 -loop
   res ;
-
-: test->spread
- s" aabbaa"
- [char] a
- %1101
- >spread
- dup . cr
- assert( %110001 = ) ;
-
-test->spread

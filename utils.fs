@@ -11,7 +11,7 @@
 \ print a line of at least 5 "="s
 \ hr stands for "horizontal rule"
 \ like in html
-: hr ( u -- ) #5 max 0 
+: hr ( u -- ) #5 max 0
   do [char] = emit loop ;
 
 \ type a string and underline it with
@@ -19,8 +19,8 @@
 \ h1 stands for "heading level 1"
 \ like in html
 : h1 ( c-addr u -- )
-  tuck 
-  cr type 
+  tuck
+  cr type
   cr hr
   cr ;
 
@@ -33,9 +33,6 @@
 \ e.g. 4 1s => %1111
 : 1s ( u -- mask )
   1 swap lshift 1- ;
-
-: under+  ( a b c -- a+c b )
-  rot + swap ;
 
 \ decrement the second element
 : 1-' ( u1 u2 -- u1-1 u2 )
@@ -75,35 +72,17 @@
    drop -1
  then ;
 
-: test-1st-bit
-  cr
-  0 0 1st-bit .
-  #2 1 1st-bit .
-  #8 1 1st-bit .
-  %10111 0 1st-bit .
-  -1 0 1st-bit . ;
-
 : trim-0s ( u1 -- u2 u3 )
   dup 1 1st-bit
-  dup >r 
+  dup >r
   rshift
   r> ;
-
-(
-%10110 trim-0s .s
-%111 trim-0s .s 
-)
 
 : trim-1s ( u1 -- u2 u3 )
   dup 0 1st-bit
-  dup >r 
+  dup >r
   rshift
   r> ;
-
-(
-%10110 trim-1s .s 2drop
-%111 trim-1s .s 
-)
 
 \ store a cell-counted string in the
 \ dictionary
@@ -138,7 +117,7 @@
   swap #8 lshift or ;
 
 (
-here $abcd dup 2b, 
+here $abcd dup 2b,
 \ cr dup #8 dump
 over 2b@ = .
 drop
@@ -174,8 +153,11 @@ drop
 \ in-place, return new size
 : remove-spaces' ( c-addr u1 -- c-addr u2 )
   over -rot over -rot
-  remove-spaces 
+  remove-spaces
   over - ;
+
+warnings @
+0 warnings !
 
 \ in-place char replacement
 \ replace the char c-from in the buffer
@@ -190,6 +172,8 @@ drop
     then
   loop
   2drop ;
+
+warnings !
 
 \ a parsing word to be able to write
 \ numbers with spaces
@@ -222,12 +206,3 @@ drop
   1 -loop
   2drop -1
   ;
-
-: test-find-char-from-end
-  s" abcd" [char] c
-  find-char-from-end assert( 2 = )
-
-  s" abcd" [char] f
-  find-char-from-end assert( -1 = )
-  ;
-test-find-char-from-end
