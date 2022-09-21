@@ -1,3 +1,5 @@
 test-outputs/
 *.hex
 *.bin
+*.asm
+*.vcd

@@ -355,11 +355,16 @@ s" Clear Bit in I/O register"
   instruction: cbi,
 
 s" oooo oAAd dddd AAAA" @layout
+\  oooo oAAr rrrr AAAA
 \ =============================
 
 s" Load an I/O Location to Register"
   n( % 1011 0 )
   instruction: in,
+
+s" Store Register to I/O Location"
+  n( % 1011 1 )
+  instruction: out,
 
 (
 

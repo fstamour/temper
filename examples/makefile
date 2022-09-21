@@ -1,11 +1,24 @@
 
-assembler := ../*.fs
+assembler := $(wildcard ../*.fs)
+examples := $(wildcard *.fs)
+traces := $(patsubst %.fs, %.vcd, $(examples))
+disassemblies := $(patsubst %.fs, %.asm, $(examples))
 
-%.bin: %.fs .. $(assembler)
+all: $(disassemblies) # $(traces)
+
+# Assemble
+%.bin: %.fs $(assembler)
 	gforth $<
 
+# Disassamble
+%.asm: %.bin
+	avr-objdump -b binary -D $< -m avr25 > $@
+
+# Convert binary format to ihex format, as some tools don't take
+# binary format as input
 %.hex: %.bin
 	avr-objcopy -I binary -O ihex $< $@
 
-%.vcd: %.hex
-	simavr --mcu attiny13 -f 9600000 -ff $< --output $@
+.PHONY: clean
+clean:
+	rm -f *.bin *.hex *.asm

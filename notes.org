@@ -1,0 +1,25 @@
+* Notes
+
+** simavr
+
+The =--add-trace= command line argument really sucks. On some
+combination the program simply segfault.
+
+Maybe I'll retry in the future, here's the makefile rule that I used
+to test simavr (without the =--add-trace= arguments):
+
+#+begin_src makefile
+  # Simulate
+  %.vcd: %.hex
+          simavr --mcu attiny13 -f 9600000 -ff $<
+
+  .PHONY: clean
+  clean:
+          rm -f *.vcd
+#+end_src
+
+** qemu
+
+Qemu can emulate some AVR **system**, like an arduino uno for
+example. You can get a nice serial terminal, but it lacks a lot of
+peripheral, I think only the USART is implemented.
