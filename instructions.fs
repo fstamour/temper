@@ -4,68 +4,68 @@
 : sleep, $9588 @assembly ;
 
 \ Watchdog Reset
-: wdr, n( % 1001 0101 1010 1000 ) @assembly ;
+: wdr, $95A8 @assembly ;
 
 \ Clear Carry Flag
-: clc, n( % 1001 0100 1000 1000 ) @assembly ;
+: clc, $9488 @assembly ;
 \ Set Carry Flag
-: sec, n( % 1001 0100 0000 1000 ) @assembly ;
+: sec, $9408 @assembly ;
 
 \ Clear Half Carry Flag
-: clh, n( % 1001 0100 1101 1000 ) @assembly ;
+: clh, $94C8 @assembly ;
 \ Set Half Carry Flag
-: seh, n( % 1001 0100 0101 1000 ) @assembly ;
+: seh, $9458 @assembly ;
 
 \ Clear Global Interrupt Enable bit
-: cli, n( % 1001 0100 1111 1000 ) @assembly ;
+: cli, $94F8 @assembly ;
 \ Set Global Interrupt Enable Bit
-: sei, n( % 1001 0100 0111 1000 ) @assembly ;
+: sei, $9478 @assembly ;
 
 \ Clear Negative Flag
-: cln, n( % 1001 0100 1010 1000 ) @assembly ;
+: cln, $94A8 @assembly ;
 \ Set  Negative Flag
-: sen, n( % 1001 0100 0010 1000 ) @assembly ;
+: sen, $9428 @assembly ;
 
 \ Clear Zero Flag
-: clz, n( % 1001 0100 1001 1000 ) @assembly ;
+: clz, $9498 @assembly ;
 \ Set Zero Flag
-: sez, n( % 1001 0100 0001 1000 ) @assembly ;
+: sez, $9418 @assembly ;
 
 \ Clear Sign Flag
-: cls, n( % 1001 0100 1100 1000 ) @assembly ;
+: cls, $94C8 @assembly ;
 \ Set Sign Flag
-: ses, n( % 1001 0100 0100 1000 ) @assembly ;
+: ses, $9448 @assembly ;
 
 \ Clear Overflow Flag
-: clv, n( % 1001 0100 1011 1000 ) @assembly ;
+: clv, $94B8 @assembly ;
 \ Set Overflow Flag
-: sev, n( % 1001 0100 0011 1000 ) @assembly ;
+: sev, $9438 @assembly ;
 
 \ Clear T Bit
-: clt, n( % 1001 0100 1110 1000 ) @assembly ;
+: clt, $94E8 @assembly ;
 \ Set T Bit
-: set, n( % 1001 0100 0110 1000 ) @assembly ;
+: set, $9468 @assembly ;
 
 \ Indirect Jump
-: ijmp, n( % 1001 0100 0000 1001 ) @assembly ;
+: ijmp, $9409 @assembly ;
 \ Extended Indirect Jump
-: eijmp, n( % 1001 0100 0001 1001 ) @assembly ;
+: eijmp, $9419 @assembly ;
 \ Indirect Call to Subroutine
-: icall, n( % 1001 0101 0000 1001 ) @assembly ;
+: icall, $9509 @assembly ;
 \ Extended Indirect Call to Subroutine
-: iecall, n( % 1001 0101 0001 1001 ) @assembly ;
+: iecall, $9519 @assembly ;
 \ Return from subroutine
-: ret, n( % 1001 0101 0000 1000 ) @assembly ;
+: ret, $9508 @assembly ;
 \ Return from Interrupt
-: reti, n( % 1001 0101 0001 1000 ) @assembly ;
+: reti, $9518 @assembly ;
 
 \ TODO lpm has 2 other variants, this one loads the value into R0
 \ Load Program Memory
-: lpm, n( % 1001 0101 1100 1000 ) @assembly ;
+: lpm, $95C8 @assembly ;
 
 \ TODO elpm has 2 other variants, this one loads the value into R0
 \ Extended Load Program Memor
-: elpm>r0, n( % 1001 0101 1101 1000 ) @assembly ;
+: elpm>r0, $95B8 @assembly ;
 
 : rd-layout ( d r -- u )
   \ 0000 01rd dddd rrrr
