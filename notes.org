@@ -1,5 +1,9 @@
 * Notes
 
+** guix
+
+gcc-cross-avr-toolchain
+
 ** simavr
 
 The =--add-trace= command line argument really sucks. On some

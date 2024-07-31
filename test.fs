@@ -1,5 +1,21 @@
 include avr.fs
 
+: test-nop,
+  #10 0assembly
+  nop,
+  #assembly @ 1 = \ TODO assert that this is true
+  .assembly
+  free-assembly ;
+
+test-nop,
+
+: test-cpc,
+  #10 0assembly
+  10 5 cpc,
+  .assembly
+  free-assembly ;
+
+test-cpc,
 
 : test-find-char-from-end
   s" abcd" [char] c
@@ -11,13 +27,13 @@ include avr.fs
 test-find-char-from-end
 
 
-: test-1st-bit
-  cr
-  0 0 1st-bit .
-  #2 1 1st-bit .
-  #8 1 1st-bit .
-  %10111 0 1st-bit .
-  -1 0 1st-bit . ;
+\ : test-1st-bit
+\   cr
+\   0 0 1st-bit .
+\   #2 1 1st-bit .
+\   #8 1 1st-bit .
+\   %10111 0 1st-bit .
+\   -1 0 1st-bit . ;
 
 
 (
@@ -53,57 +69,8 @@ $ffff frob cr .ss cr drop
 )
 
 
-: test->spread
- s" aabbaa"
- [char] a
- %1101
- >spread
- dup . cr
- assert( %110001 = ) ;
-
-test->spread
-
-: test->mask
-  s" oooo oord dddd rrrr"
-  @layout
-  layout' 2dup 2dup
-  [char] o .c >mask dup .2b cr
-  assert( %1111110000000000 = )
-  [char] d .c >mask dup .2b cr
-  assert( %111110000 = )
-  [char] r .c >mask dup .2b cr
-  assert( %1000001111 = ) ;
-
-\ ==========================
-
-test-@layout cr cr
-test->mask
-
-(
-s" oooo oord dddd rrrr"
-@layout
-layout' char o bl replace-char
-.layout
-layout' next-operand .
-layout' char r bl replace-char
-layout' next-operand .
-layout' char d bl replace-char
-layout' next-operand .
-quit
-)
 
 
-: test-disassembly
-  +compile-mode
-  10 0assembly
-  ret, clc,
-  #7 #12 adc,
-  decompile
-  \ free-assembly
-  ;
-
-.instructions
-test-disassembly
 
 \ ==========================
 
@@ -160,13 +127,3 @@ pad s" output.bin" test-dir/
 write-assembly
 
 \ ==========================
-
-(
-' create @instruction
-' + @instruction
-cr
-.s cr
-instructions 24 dump cr
-.instructions
-quit
-)

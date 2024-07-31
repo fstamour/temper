@@ -56,33 +56,33 @@
 : nswap ( a b c -- b a c )
   -rot swap rot ;
 
-\ find the rightmost bit equals to b
-: 1st-bit ( u1 b -- u2 )
- {: x bit :}
- 0
- begin
-   dup #8 cells <
-   x 1 and bit <>
-     and
- while
-  1+
-   x 2/ to x
- repeat
- dup #64 = if
-   drop -1
- then ;
+\ \ find the rightmost bit equals to b
+\ : 1st-bit ( u1 b -- u2 )
+\  {: x bit :}
+\  0
+\  begin
+\    dup #8 cells <
+\    x 1 and bit <>
+\      and
+\  while
+\   1+
+\    x 2/ to x
+\  repeat
+\  dup #64 = if
+\    drop -1
+\  then ;
 
-: trim-0s ( u1 -- u2 u3 )
-  dup 1 1st-bit
-  dup >r
-  rshift
-  r> ;
+\ : trim-0s ( u1 -- u2 u3 )
+\   dup 1 1st-bit
+\   dup >r
+\   rshift
+\   r> ;
 
-: trim-1s ( u1 -- u2 u3 )
-  dup 0 1st-bit
-  dup >r
-  rshift
-  r> ;
+\ : trim-1s ( u1 -- u2 u3 )
+\   dup 0 1st-bit
+\   dup >r
+\   rshift
+\   r> ;
 
 \ store a cell-counted string in the
 \ dictionary
@@ -123,17 +123,19 @@ over 2b@ = .
 drop
 )
 
-\ nicely print a 16bits integer
-\ in binary, right-aligned, and
-\ in hexadecimal, left-aligned
-: .2b ( u -- )
-  \ left pad!
-  dup log2 #17 swap - spaces
-  base @ swap
-  #2 base !
-  dup . \ print in binary
-  hex [char] $ emit . \ print in hex
-  base ! ;
+\ TODO log2 not defined...
+
+\ \ nicely print a 16bits integer
+\ \ in binary, right-aligned, and
+\ \ in hexadecimal, left-aligned
+\ : .2b ( u -- )
+\   \ left pad!
+\   dup log2 #17 swap - spaces
+\   base @ swap
+\   #2 base !
+\   dup . \ print in binary
+\   hex [char] $ emit . \ print in hex
+\   base ! ;
 
 \ print an xt's name
 : .xt-name ( xt -- )

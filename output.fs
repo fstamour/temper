@@ -11,8 +11,6 @@ variable #assembly
 variable /assembly
 
 : 0assembly ( u - c-addr )
-  \ todo warn if assembly is already
-  \ allocated
   dup
   /assembly !
   allocate throw
