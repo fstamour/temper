@@ -17,6 +17,20 @@ test-nop,
 
 test-cpc,
 
+: find-char-from-end ( c-addr u1 c - u2 )
+  swap 0 swap
+  -do
+    over i + c@ over =
+    if
+      2drop
+      i
+      unloop exit
+    then
+  1 -loop
+  2drop -1
+  ;
+
+
 : test-find-char-from-end
   s" abcd" [char] c
   find-char-from-end assert( 2 = )
@@ -118,7 +132,7 @@ here test-dir - /test-dir !
   dest /test-dir @ u + ;
 
 test-dir'
-n( % 111 110 000 ) \ permission flags
+%111110000 \ permission flags
 mkdir-parents
 \ skip "already exists" error
 dup -529 <> [if] throw [else] drop [then]
